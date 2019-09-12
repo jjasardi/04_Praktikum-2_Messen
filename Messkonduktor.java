@@ -1,3 +1,5 @@
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -8,6 +10,7 @@ import java.util.Random;
  */
 public class Messkonduktor {
   private int anzahlZufallszahlen;
+  Random zufallszahlenGenerator = new Random();
 
   /**
    * Erstellt einen Messkonduktor.
@@ -34,21 +37,18 @@ public class Messkonduktor {
     return messResultate;
   }
 
-  private int einzelneMessungDurchfuehren() {
-    long zeitVorher = System.currentTimeMillis();
+  public int einzelneMessungDurchfuehren() {
+    Instant zeitVorher = Instant.now();
 
     int[] zufallszahlen = zufallszahlenGenerieren();
     Arrays.sort(zufallszahlen);
 
-    long zeitDanach = System.currentTimeMillis();
-    int zeitdauerInMs = (int) (zeitDanach - zeitVorher);
-
-    return zeitdauerInMs;
+    long zeitdauerInMs = Duration.between(zeitVorher, Instant.now()).toMillis();
+    return (int) zeitdauerInMs;
   }
 
   private int[] zufallszahlenGenerieren() {
     int[] zufallszahlen = new int[anzahlZufallszahlen];
-    Random zufallszahlenGenerator = new Random();
 
     for (int i = 0; i < anzahlZufallszahlen; i++) {
       zufallszahlen[i] = zufallszahlenGenerator.nextInt(100000);
